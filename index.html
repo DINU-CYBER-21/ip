@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>නිදහස් IP Tracker - ශ්‍රී ලංකා</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-map-marker-alt"></i>
+                <h1>IP Tracker Lanka</h1>
+            </div>
+            <p class="tagline">ඔබගේ IP ලිපිනය සහ ස්ථානය නිදහසේ අනාවරණය කරගන්න</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- IP Display Card -->
+            <div class="card ip-card">
+                <h2><i class="fas fa-network-wired"></i> ඔබගේ IP ලිපිනය</h2>
+                <div class="ip-display">
+                    <div id="ip-address" class="ip-value">ලබා ගනිමින්...</div>
+                    <button onclick="getIP()" class="btn refresh-btn">
+                        <i class="fas fa-redo"></i> යාවත්කාලීන කරන්න
+                    </button>
+                </div>
+                <div class="ip-info">
+                    <div class="info-item">
+                        <span><i class="fas fa-globe-asia"></i> ISP:</span>
+                        <span id="isp">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span><i class="fas fa-shield-alt"></i> IP වර්ගය:</span>
+                        <span id="ip-type">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Card -->
+            <div class="card location-card">
+                <h2><i class="fas fa-map-marked-alt"></i> ස්ථාන තොරතුරු</h2>
+                <div class="location-grid">
+                    <div class="loc-box">
+                        <i class="fas fa-flag"></i>
+                        <h3>රට</h3>
+                        <p id="country">-</p>
+                    </div>
+                    <div class="loc-box">
+                        <i class="fas fa-city"></i>
+                        <h3>නගරය</h3>
+                        <p id="city">-</p>
+                    </div>
+                    <div class="loc-box">
+                        <i class="fas fa-map"></i>
+                        <h3>කලාපය</h3>
+                        <p id="region">-</p>
+                    </div>
+                    <div class="loc-box">
+                        <i class="fas fa-code"></i>
+                        <h3>දුරකථන කේතය</h3>
+                        <p id="country-code">-</p>
+                    </div>
+                    <div class="loc-box">
+                        <i class="fas fa-compass"></i>
+                        <h3>අක්ෂාංශ</h3>
+                        <p id="latitude">-</p>
+                    </div>
+                    <div class="loc-box">
+                        <i class="fas fa-compass"></i>
+                        <h3>දේශාංශ</h3>
+                        <p id="longitude">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Card -->
+            <div class="card map-card">
+                <h2><i class="fas fa-map"></i> සිතියම් දර්ශනය</h2>
+                <div id="map"></div>
+                <div class="map-controls">
+                    <button onclick="locateMe()" class="btn map-btn">
+                        <i class="fas fa-location-arrow"></i> මගේ ස්ථානය
+                    </button>
+                    <button onclick="copyIP()" class="btn map-btn secondary">
+                        <i class="fas fa-copy"></i> IP පිටපත් කරන්න
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tools Card -->
+            <div class="card tools-card">
+                <h2><i class="fas fa-tools"></i> අමතර මෙවලම්</h2>
+                
+                <div class="tool">
+                    <h3><i class="fas fa-search"></i> IP Lookup</h3>
+                    <div class="search-box">
+                        <input type="text" id="custom-ip" placeholder="IP ලිපිනය ඇතුළත් කරන්න (උදා: 8.8.8.8)">
+                        <button onclick="lookupIP()" class="btn">
+                            <i class="fas fa-search"></i> පරීක්ෂා කරන්න
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool">
+                    <h3><i class="fas fa-shield-alt"></i> ආරක්ෂක තත්වය</h3>
+                    <div class="security-status">
+                        <div id="vpn-status" class="status">
+                            <i class="fas fa-user-shield"></i> VPN: පරීක්ෂා කරමින්...
+                        </div>
+                        <div id="proxy-status" class="status">
+                            <i class="fas fa-server"></i> Proxy: පරීක්ෂා කරමින්...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool">
+                    <h3><i class="fas fa-info-circle"></i> තොරතුරු</h3>
+                    <div class="info-box">
+                        <p><i class="fas fa-clock"></i> වර්තමාන වේලාව: <span id="current-time"></span></p>
+                        <p><i class="fas fa-database"></i> API: ipapi.co (නිදහස්)</p>
+                        <p><i class="fas fa-map"></i> සිතියම්: OpenStreetMap</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>⚠️ මෙම මෙවලම අධ්‍යාපනික අරමුණු සඳහා පමණි</p>
+            <p class="small">සියලුම දත්ත නිදහස් API මගින් ලබා ගනී | Developed for Sri Lankan Users</p>
+            <div class="social">
+                <span><i class="fas fa-heart"></i> Made with ❤️ in Sri Lanka</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
