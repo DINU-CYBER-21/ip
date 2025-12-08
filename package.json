@@ -1,0 +1,12 @@
+{
+  "name": "simple-ip-tracker",
+  "version": "1.0.0",
+  "description": "Free IP Tracker for Sri Lanka",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["ip", "tracker", "sri-lanka", "free"],
+  "author": "dinux",
+  "license": "MIT"
+}
