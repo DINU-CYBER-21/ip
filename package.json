@@ -1,12 +1,12 @@
 {
-  "name": "simple-ip-tracker",
+  "name": "free-ip-tracker",
   "version": "1.0.0",
   "description": "Free IP Tracker for Sri Lanka",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve ."
+    "start": "echo 'Static site - no server required'"
   },
-  "keywords": ["ip", "tracker", "sri-lanka", "free"],
-  "author": "dinux",
+  "keywords": ["ip", "tracker", "sri-lanka"],
+  "author": "Your",
   "license": "MIT"
 }
